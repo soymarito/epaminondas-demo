@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epaminondas y su Madrina — Muestra Digital Interactiva Gratuita</title>
+  <meta name="description" content="Muestra interactiva oficial de Epaminondas y su Madrina. Colección Rotacuentos • Editorial Arandumí Libros.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans + Borel (Cursiva Escolar Auténtica) + Edu SA Beginner -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Edu+SA+Beginner:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #ea580c;
+      --primary-dark: #c2410c;
+      --primary-light: #fff7ed;
+      --secondary: #16a34a;
+      --secondary-dark: #15803d;
+      --accent: #f59e0b;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --bg-cream: #fdfbf7;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 16px 40px rgba(234, 88, 12, 0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg-cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Tipografías Escolares Auténticas */
+    body.font-mode-mayuscula .story-text, 
+    body.font-mode-mayuscula .story-dialogue,
+    body.font-mode-mayuscula .activity-text,
+    body.font-mode-mayuscula .dilema-text {
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px;
+    }
+    body.font-mode-cursiva .story-text, 
+    body.font-mode-cursiva .story-dialogue,
+    body.font-mode-cursiva .activity-text,
+    body.font-mode-cursiva .dilema-text {
+      font-family: 'Borel', 'Edu SA Beginner', cursive !important;
+      font-size: 1.45rem !important;
+      line-height: 1.5 !important;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+      border-bottom: 2px solid #fed7aa;
+      padding: 24px 0 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header-logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      padding: 8px 18px 8px 10px;
+      border-radius: 50px;
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid #fed7aa;
+      margin-bottom: 14px;
+    }
+    .header-logo-badge img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .header-logo-badge span {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary-dark);
+    }
+    .badge-free {
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    h1.hero-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #7c2d12;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    p.hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 18px;
+      font-weight: 500;
+    }
+    .author-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* Navegación rápida */
+    .nav-pills {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .nav-pill {
+      background: white;
+      color: var(--text-dark);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border: 1.5px solid #e2e8f0;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-pill:hover, .nav-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+    }
+    .nav-pill.pill-offer {
+      background: #15803d;
+      color: white;
+      border-color: #15803d;
+    }
+
+    /* Secciones Cards */
+    section { padding: 36px 0 16px; }
+    .card-block {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      border: 2px solid #fed7aa;
+      margin-bottom: 30px;
+    }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffedd5;
+      color: #9a3412;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #7c2d12;
+      margin-bottom: 8px;
+    }
+    .section-desc {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    /* Selector de Tipografías */
+    .typo-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #fff7ed;
+      border: 1px dashed #f97316;
+      padding: 10px 14px;
+      border-radius: 30px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .typo-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #c2410c;
+      margin-right: 4px;
+    }
+    .btn-typo {
+      background: white;
+      border: 1px solid #fed7aa;
+      color: #7c2d12;
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-typo.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Lector de Escenas */
+    .scene-slider {
+      background: #fafaf9;
+      border-radius: var(--radius-md);
+      border: 1px solid #e7e5e4;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .scene-slide {
+      display: none;
+      padding: 24px;
+      text-align: center;
+    }
+    .scene-slide.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scene-img-wrapper {
+      max-width: 620px;
+      margin: 0 auto 18px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border: 2px solid white;
+    }
+    .scene-img-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .scene-badge {
+      display: inline-block;
+      background: #ffedd5;
+      color: #9a3412;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 3px 12px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+    }
+    .story-text {
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      line-height: 1.6;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .story-dialogue {
+      background: #fff7ed;
+      border-left: 4px solid #ea580c;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 14px auto 0;
+      color: #9a3412;
+      font-weight: 700;
+      text-align: left;
+      max-width: 680px;
+    }
+
+    .scene-nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding: 0 6px;
+    }
+    .btn-scene-nav {
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-scene-nav:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .btn-scene-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .scene-indicators {
+      display: flex;
+      gap: 6px;
+    }
+    .scene-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .scene-dot.active {
+      background: var(--primary);
+      transform: scale(1.3);
+    }
+
+    /* Rompecabezas */
+    .puzzle-container {
+      max-width: 460px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .puzzle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 5px;
+      background: #fed7aa;
+      padding: 8px;
+      border-radius: 16px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 14px;
+    }
+    .puzzle-slot {
+      aspect-ratio: 4 / 3;
+      background: #f8fafc;
+      border: 2px dashed #fdba74;
+      border-radius: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .puzzle-slot.selected {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px #93c5fd;
+      transform: scale(0.97);
+    }
+    .btn-puzzle {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-puzzle:hover { background: #e2e8f0; }
+    .puzzle-success-banner {
+      display: none;
+      background: #dcfce7;
+      border: 2px solid #22c55e;
+      color: #15803d;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      margin-top: 14px;
+    }
+
+    /* Unir con Flechas */
+    .match-demo-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .match-btn {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .match-btn:hover { background: #f1f5f9; }
+    .match-btn.selected {
+      background: #fef08a;
+      border-color: #eab308;
+      transform: scale(1.02);
+    }
+    .match-btn.matched {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
+      cursor: default;
+    }
+    .match-feedback {
+      text-align: center;
+      font-weight: 800;
+      min-height: 24px;
+      font-size: 0.95rem;
+    }
+
+    /* Actividad Primaria: Dilema de Pensamiento Crítico */
+    .dilema-box {
+      background: #fdf4ff;
+      border: 2px solid #e879f9;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 24px;
+      text-align: left;
+    }
+    .dilema-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #86198f;
+      margin-bottom: 8px;
+    }
+    .dilema-desc {
+      font-size: 0.95rem;
+      color: #701a75;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .dilema-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .dilema-option-btn {
+      background: white;
+      border: 2px solid #f0abfc;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #4a044e;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dilema-option-btn:hover {
+      background: #fae8ff;
+      border-color: #d946ef;
+    }
+    .dilema-option-btn.correct {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #14532d;
+      font-weight: 700;
+    }
+    .dilema-feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      display: none;
+    }
+
+    /* Grabador de Audio Nativo Real (100% probado en PC, Notebook y Celular) */
+    .demo-audio-real {
+      background: #fff7ed;
+      border: 2px solid #fdba74;
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .btn-record-demo {
+      background: #ea580c;
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 30px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+      transition: all 0.2s;
+    }
+    .btn-record-demo:hover { background: #c2410c; }
+    .btn-record-demo.recording {
+      background: #0f172a;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* VENTA: MEGA PACK */
+    .offer-section {
+      background: linear-gradient(135deg, #7c2d12 0%, #431407 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 40px 30px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      border: 3px solid #f97316;
+    }
+    .offer-badge {
+      background: #f59e0b;
+      color: #78350f;
+      font-weight: 900;
+      font-size: 0.85rem;
+      padding: 6px 18px;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .offer-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #ffedd5;
+    }
+    .offer-subtitle {
+      font-size: 1.05rem;
+      color: #fed7aa;
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.5;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    .resource-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(10px);
+      padding: 14px 16px;
+      border-radius: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: all 0.2s;
+    }
+    .resource-card:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+    .resource-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .resource-info h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fef08a;
+      margin-bottom: 2px;
+    }
+    .resource-info p {
+      font-size: 0.82rem;
+      color: #fed7aa;
+      line-height: 1.3;
+    }
+
+    .price-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 2px dashed #f59e0b;
+      padding: 24px;
+      border-radius: 18px;
+      max-width: 500px;
+      margin: 0 auto 24px;
+    }
+    .price-tag {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #4ade80;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-sub {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 18px;
+    }
+    .btn-buy-mp {
+      background: linear-gradient(135deg, #009ee3 0%, #007eb5 100%);
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 40px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      box-shadow: 0 6px 20px rgba(0, 158, 227, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-buy-mp:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 25px rgba(0, 158, 227, 0.6);
+    }
+    .alias-pill {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      color: #fef08a;
+    }
+
+    .btn-whatsapp-cta {
+      background: #25d366;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    .btn-whatsapp-cta:hover { transform: scale(1.03); }
+
+    .community-box {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .community-box h3 {
+      color: #166534;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .community-box p {
+      color: #15803d;
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
+
+    @media (max-width: 640px) {
+      h1.hero-title { font-size: 1.7rem; }
+      .card-block { padding: 20px 16px; }
+      .offer-section { padding: 30px 16px; }
+      .match-demo-container { grid-template-columns: 1fr; }
+      .price-tag { font-size: 2.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="header-logo-badge">
+        <img src="assets/logo.webp" alt="Editorial Arandumí Libros">
+        <span>Editorial Arandumí Libros</span>
+        <span class="badge-free">Muestra Gratuita</span>
+      </div>
+
+      <h1 class="hero-title">Epaminondas y su Madrina</h1>
+      <p class="hero-subtitle">
+        El cuento clásico sobre el sentido común, la escucha atenta y el valor de pensar antes de actuar.
+      </p>
+
+      <div class="author-badge">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>Narrado por Mario Espínola • Librero y Narrador (26+ años)</span>
+      </div>
+
+      <div class="nav-pills">
+        <a href="#cuento" class="nav-pill"><i class="fa-solid fa-book"></i> Leer el Cuento</a>
+        <a href="#puzzle" class="nav-pill"><i class="fa-solid fa-puzzle-piece"></i> Rompecabezas</a>
+        <a href="#actividades" class="nav-pill"><i class="fa-solid fa-check-double"></i> Probar Actividades</a>
+        <a href="#oferta" class="nav-pill pill-offer"><i class="fa-solid fa-gift"></i> Mega Pack Completo ($8.500)</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SECCIÓN 1: EL CUENTO CON TEXTO EXACTO Y CURSIVA AUTÉNTICA -->
+    <section id="cuento">
+      <div class="card-block">
+        <span class="section-tag"><i class="fa-solid fa-book-open"></i> Muestra de Lectura Oficial</span>
+        <h2 class="section-title">Primeras Escenas del Cuento</h2>
+        <p class="section-desc">
+          Elegí la tipografía escolar y leé el texto oficial de la adaptación de Mario Espínola para Arandumí Libros:
+        </p>
+
+        <!-- Selector de Tipografías -->
+        <div class="typo-toolbar">
+          <span class="typo-label">Tipografía escolar:</span>
+          <button type="button" class="btn-typo active" onclick="setFontMode('minuscula')">🔤 Imprenta Minúscula</button>
+          <button type="button" class="btn-typo" onclick="setFontMode('mayuscula')">🔠 Imprenta Mayúscula</button>
+          <button type="button" class="btn-typo" onclick="setFontMode('cursiva')">✍️ Cursiva Escolar (Borel)</button>
+        </div>
+
+        <!-- Visor de Escenas con Texto y Diálogos Exactos -->
+        <div class="scene-slider">
+          
+          <!-- Escena 1 (Escena 3 del libro: El Bizcochuelo) -->
+          <div class="scene-slide active" id="slide-1">
+            <span class="scene-badge">Escena 1 • El Bizcochuelo</span>
+            <div class="scene-img-wrapper">
+              <img src="assets/escena1_bizcochuelo.webp" alt="Epaminondas y el bizcochuelo">
+            </div>
+            <p class="story-text">
+              Un día, la madrina le regaló un bizcochuelo esponjoso: <em>“¡Llévaselo a tu mamá y agárralo bien para que no se te caiga!”</em>.<br><br>
+              Él lo apretó contra el pecho con toda su fuerza en todo el camino. Al llegar, solo había migas aplastadas.
+            </p>
+            <div class="story-dialogue">
+              Mamá le dijo: <em>“¡Ay, Epaminondas! El bizcochuelo se envuelve en un pañuelo limpio, se pone sobre la cabeza y te colocas el sombrero encima”</em>.
+            </div>
+          </div>
+
+          <!-- Escena 2 (Escena 4 del libro: La Manteca) -->
+          <div class="scene-slide" id="slide-2">
+            <span class="scene-badge">Escena 2 • La Manteca</span>
+            <div class="scene-img-wrapper">
+              <img src="assets/escena2_manteca.webp" alt="Epaminondas y la manteca">
+            </div>
+            <p class="story-text">
+              Al día siguiente, la madrina le regaló manteca fresca. Él recordó la regla: se la puso en la cabeza y se calzó el sombrero.<br><br>
+              ¡Pero hacía un calorón de 40 grados! La manteca se derritió y le chorreó por la cara y la ropa.<br><br>
+              Llegó bañado en grasa amarilla.
+            </p>
+            <div class="story-dialogue">
+              Mamá le dijo: <em>“La manteca se envuelve en hojas grandes y se sumerge en agua fresca en el camino”</em>.
+            </div>
+          </div>
+
+          <!-- Escena 3 (Escena 5 del libro: El Perrito) -->
+          <div class="scene-slide" id="slide-3">
+            <span class="scene-badge">Escena 3 • El Perrito</span>
+            <div class="scene-img-wrapper">
+              <img src="assets/escena3_perrito.webp" alt="Epaminondas y el perrito">
+            </div>
+            <p class="story-text">
+              Luego, la madrina le regaló un lindo perrito cachorro.<br><br>
+              Él recordó las hojas y en cada laguna sumergió al perrito: <strong>¡Glup, glup, glup!</strong><br><br>
+              El perrito llegó al rancho empapado y bamboleándose.
+            </p>
+            <div class="story-dialogue">
+              Mamá le dijo: <em>“A un perrito se le ata una cuerdita suave y se tira despacito para que camine”</em>.
+            </div>
+          </div>
+        </div>
+
+        <!-- Controles Slider -->
+        <div class="scene-nav-controls">
+          <button type="button" class="btn-scene-nav" id="btnPrevScene" onclick="changeScene(-1)" disabled>
+            <i class="fa-solid fa-arrow-left"></i> Anterior
+          </button>
+          <div class="scene-indicators">
+            <div class="scene-dot active" onclick="goToScene(1)"></div>
+            <div class="scene-dot" onclick="goToScene(2)"></div>
+            <div class="scene-dot" onclick="goToScene(3)"></div>
+          </div>
+          <button type="button" class="btn-scene-nav" id="btnNextScene" onclick="changeScene(1)">
+            Siguiente <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: ROMPECABEZAS DIGITAL -->
+    <section id="puzzle">
+      <div class="card-block">
+        <span class="section-tag"><i class="fa-solid fa-puzzle-piece"></i> Mini-Juego Táctil</span>
+        <h2 class="section-title">El Rompecabezas de Epaminondas</h2>
+        <p class="section-desc">
+          Tocá una pieza y luego tocá otra para intercambiarlas de lugar hasta armar la ilustración completa de 6 piezas:
+        </p>
+
+        <div class="puzzle-container">
+          <div class="puzzle-grid" id="puzzleGrid"></div>
+
+          <div class="puzzle-actions">
+            <button type="button" class="btn-puzzle" onclick="shufflePuzzle()">
+              <i class="fa-solid fa-shuffle"></i> Mezclar de nuevo
+            </button>
+          </div>
+
+          <div class="puzzle-success-banner" id="puzzleSuccess">
+            🎉 ¡GENIAL! ¡Completaste el rompecabezas de Epaminondas!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: ACTIVIDADES INTERACTIVAS (INICIAL Y PRIMARIA) -->
+    <section id="actividades">
+      
+      <!-- Actividad 1 (Inicial): Unir con Flechas Bidireccional -->
+      <div class="card-block">
+        <span class="section-tag"><i class="fa-solid fa-shapes"></i> Muestra Nivel Inicial (3 a 6 años)</span>
+        <h2 class="section-title">Actividad 1: Unir Regalo y Regla Correcta</h2>
+        <p class="section-desc">
+          Tocá primero un regalo y luego la regla correcta que le correspondía:
+        </p>
+
+        <div class="match-demo-container" id="matchGame">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="match-btn" data-type="left" data-id="1" onclick="selectMatch(this)">🍰 Bizcochuelo</div>
+            <div class="match-btn" data-type="left" data-id="2" onclick="selectMatch(this)">🧈 Manteca fresca</div>
+            <div class="match-btn" data-type="left" data-id="3" onclick="selectMatch(this)">🐶 Perrito cachorro</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="match-btn" data-type="right" data-id="2" onclick="selectMatch(this)">🌿 Envolver en hojas y agua fresca</div>
+            <div class="match-btn" data-type="right" data-id="1" onclick="selectMatch(this)">🧣 Envolver en pañuelo sin aplastarlo</div>
+            <div class="match-btn" data-type="right" data-id="3" onclick="selectMatch(this)">🪢 Atar piolita suave y caminar despacio</div>
+          </div>
+        </div>
+        <div class="match-feedback" id="matchFeedback"></div>
+
+        <!-- Grabador de Audio Nativo Real con Vúmetro -->
+        <div class="demo-audio-real">
+          <p style="font-weight:800; color:#9a3412; font-size:1rem; margin-bottom:6px;">
+            🎙️ ¿Cómo usás vos la regla de PARAR, MIRAR Y PENSAR?
+          </p>
+          <p style="font-size:0.86rem; color:#78350f; margin-bottom:12px;">
+            Probá la grabación de voz nativa: tocá el botón, hablá y escuchate acá mismo:
+          </p>
+          <button type="button" class="btn-record-demo" id="btnRecordDemo" onclick="toggleDemoRecord()">
+            <i class="fa-solid fa-microphone"></i> <span id="recordLabel">🔴 Grabar mi respuesta</span>
+          </button>
+          <div id="demoAudioPlayerBox" style="display:none; margin-top:12px;">
+            <audio id="demoAudioPlayback" controls controlslist="nodownload" style="width:100%; max-width:400px; height:40px;"></audio>
+          </div>
+        </div>
+
+        <!-- Opción Escrita Alternativa (si prefieren escribir o si no anda el micrófono) -->
+        <div style="margin-top:16px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:14px 16px; text-align:left;">
+          <label for="demoTextInput" style="display:block; font-weight:700; color:#334155; font-size:0.92rem; margin-bottom:6px;">
+            ✍️ O también podés escribir tu respuesta acá (si preferís escribir o no tenés micrófono):
+          </label>
+          <textarea id="demoTextInput" style="width:100%; min-height:80px; padding:10px 12px; border:1.5px solid #e2e8f0; border-radius:10px; font-family:inherit; font-size:0.95rem; resize:vertical; box-sizing:border-box;" placeholder="Escribí acá qué le dirías vos a Epaminondas si fueras su mamá o su madrina..."></textarea>
+        </div>
+      </div>
+
+      <!-- Actividad 2 (Primaria): Dilema Ético de Pensamiento Crítico -->
+      <div class="card-block">
+        <span class="section-tag" style="background:#f3e8ff; color:#7e22ce;"><i class="fa-solid fa-brain"></i> Muestra Nivel Primaria (7 a 10 años)</span>
+        <h2 class="section-title">Actividad 2: Dilema de Sentido Común y Pensamiento Crítico</h2>
+        <p class="section-desc">
+          En la escuela y en la vida recibimos instrucciones, pero debemos pensar qué objeto tenemos en las manos:
+        </p>
+
+        <div class="dilema-box">
+          <div class="dilema-title">🥚 Dilema: ¿Cómo transportarías 6 huevos frescos de campo?</div>
+          <p class="dilema-desc">
+            Si la madrina te regalara 6 huevos recién cosechados, ¿cuál de las siguientes opciones elegirías según el sentido común?
+          </p>
+
+          <div class="dilema-options">
+            <button type="button" class="dilema-option-btn" onclick="checkDilema(1, this)">
+              1. Envolverlos en un pañuelo de seda y llevarlos en la cabeza bajo el sombrero (como el bizcochuelo).
+            </button>
+            <button type="button" class="dilema-option-btn" onclick="checkDilema(2, this)">
+              2. Atarles una piolita a cada huevo y arrastrarlos suavemente por el camino de tierra (como al perrito).
+            </button>
+            <button type="button" class="dilema-option-btn" onclick="checkDilema(3, this)">
+              3. Llevarlos con ambas manos en una canastita con paja o un recipiente acolchado, caminando con cuidado.
+            </button>
+          </div>
+
+          <div class="dilema-feedback" id="dilemaFeedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: OFERTA DEL MEGA PACK COMPLETO (CORREGIDA SIN "CONSEJOS PEDAGÓGICOS") -->
+    <section id="oferta">
+      <div class="offer-section">
+        <span class="offer-badge">⭐ Paquete Educativo Integral</span>
+        <h2 class="offer-title">Llevate el Mega Pack Completo de Epaminondas</h2>
+        <p class="offer-subtitle">
+          Todo el material interactivo, imprimible y sonoro para trabajar literatura con valores, comprensión lectora y pensamiento crítico en el aula y en casa.
+        </p>
+
+        <!-- Grilla de los 9 Recursos Corregida -->
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div class="resource-icon">📱</div>
+            <div class="resource-info">
+              <h4>1. Libro Inicial Interactivo</h4>
+              <p>12 escenas completas con cambio de fuentes e ilustraciones nítidas.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">📖</div>
+            <div class="resource-info">
+              <h4>2. Libro Clásico Completo</h4>
+              <p>Versión tradicional íntegra para lectura autónoma o mediada.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🎨</div>
+            <div class="resource-info">
+              <h4>3. Cuadernillo Nivel 1 (Inicial)</h4>
+              <p>8 actividades interactivas y pizarras de dibujo para 3 a 6 años.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-info">🧠</div>
+            <div class="resource-info">
+              <h4>4. Cuaderno Nivel 2 (Primaria)</h4>
+              <p>Pensamiento crítico, 6 dilemas éticos y caligrafía en cursiva escolar.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🎧</div>
+            <div class="resource-info">
+              <h4>5. Audiolibro Completo MP3</h4>
+              <p>Narrado con música y efectos sonoros por Mario Espínola.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">📋</div>
+            <div class="resource-info">
+              <h4>6. Ficha Guía Docente (PDF)</h4>
+              <p>Planificación áulica lista para imprimir y llevar a clase.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🖼️</div>
+            <div class="resource-info">
+              <h4>7. Banco de Ilustraciones 4K</h4>
+              <p>Todas las láminas en alta resolución para proyector o carteleras.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🧩</div>
+            <div class="resource-info">
+              <h4>8. Rompecabezas Digitales</h4>
+              <p>Modos de 6 y 12 piezas jugables en computadoras y celulares.</p>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">✉️</div>
+            <div class="resource-info">
+              <h4>9. Carta de Bienvenida</h4>
+              <p>Presentación de Mario Espínola compartiendo su historia con el cuento.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Precio y Compra -->
+        <div class="price-box">
+          <div class="price-tag">$8.500 <span style="font-size:1.1rem; color:#cbd5e1; font-weight:600;">ARS</span></div>
+          <div class="price-sub">Pago único • Acceso de por vida a los 9 recursos completos</div>
+          
+          <a href="https://mpago.la/1jbbA7B" target="_blank" class="btn-buy-mp">
+            <i class="fa-solid fa-cart-shopping"></i> Comprar Mega Pack Completo ($8.500)
+          </a>
+
+          <div class="alias-pill">
+            <i class="fa-solid fa-building-columns"></i> Alias transferencia: <strong>marito26.arg</strong>
+          </div>
+        </div>
+
+        <div>
+          <a href="https://wa.me/?text=Hola%20Mario!%20Prob%C3%A9%20la%20muestra%20interactiva%20de%20Epaminondas%20y%20quiero%20el%20Mega%20Pack%20Completo." target="_blank" class="btn-whatsapp-cta">
+            <i class="fa-brands fa-whatsapp" style="font-size:1.3rem;"></i>
+            <span>Consultar o pedir por WhatsApp a Mario</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Comunidad de WhatsApp -->
+      <div class="community-box">
+        <h3><i class="fa-solid fa-users"></i> ¿Sos docente o te apasiona la literatura infantil?</h3>
+        <p>
+          Sumate gratis a nuestra <strong>Comunidad de WhatsApp Arandumí</strong> (grupo silenciado, sin spam). Compartimos ideas de lectura, cuentos y novedades cada 15 días.
+        </p>
+        <a href="https://wa.me/?text=Hola%20Mario!%20Quiero%20sumarme%20a%20la%20Comunidad%20de%20WhatsApp%20de%20Arandum%C3%AD." target="_blank" class="btn-whatsapp-cta" style="background:#15803d; font-size:0.95rem; padding:10px 20px;">
+          <i class="fa-brands fa-whatsapp"></i> Unirme a la Comunidad Gratuita
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>Editorial Arandumí Libros</strong> • Mario Espínola • Librero y Narrador • 26+ años acercando literatura con valores.</p>
+      <p style="margin-top:6px; opacity:0.75;">Colección Rotacuentos • Material educativo digital para enriquecer el aula y el hogar.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Selector de Tipografía
+    function setFontMode(mode) {
+      document.body.classList.remove('font-mode-mayuscula', 'font-mode-minuscula', 'font-mode-cursiva');
+      document.body.classList.add('font-mode-' + mode);
+      
+      document.querySelectorAll('.btn-typo').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // 2. Visor de Escenas
+    let currentScene = 1;
+    const totalScenes = 3;
+
+    function goToScene(n) {
+      currentScene = n;
+      updateSceneUI();
+    }
+
+    function changeScene(delta) {
+      currentScene += delta;
+      if (currentScene < 1) currentScene = 1;
+      if (currentScene > totalScenes) currentScene = totalScenes;
+      updateSceneUI();
+    }
+
+    function updateSceneUI() {
+      document.querySelectorAll('.scene-slide').forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentScene);
+      });
+      document.querySelectorAll('.scene-dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx + 1 === currentScene);
+      });
+      document.getElementById('btnPrevScene').disabled = (currentScene === 1);
+      document.getElementById('btnNextScene').disabled = (currentScene === totalScenes);
+    }
+
+    // 3. Rompecabezas Táctil
+    const puzzleCorrectOrder = [0, 1, 2, 3, 4, 5];
+    let puzzleCurrentOrder = [3, 0, 4, 1, 5, 2];
+    let selectedSlot = null;
+
+    function renderPuzzle() {
+      const grid = document.getElementById('puzzleGrid');
+      grid.innerHTML = '';
+      
+      puzzleCurrentOrder.forEach((pieceIdx, slotIdx) => {
+        const slot = document.createElement('div');
+        slot.className = 'puzzle-slot';
+        slot.dataset.slot = slotIdx;
+        
+        const col = pieceIdx % 3;
+        const row = Math.floor(pieceIdx / 3);
+        
+        slot.style.backgroundImage = 'url("assets/escena1_bizcochuelo.webp")';
+        slot.style.backgroundSize = '300% 200%';
+        slot.style.backgroundPosition = `${col * 50}% ${row * 100}%`;
+        
+        slot.onclick = () => tapPuzzleSlot(slot, slotIdx);
+        grid.appendChild(slot);
+      });
+    }
+
+    function tapPuzzleSlot(slotEl, slotIdx) {
+      if (selectedSlot === null) {
+        selectedSlot = slotIdx;
+        slotEl.classList.add('selected');
+      } else {
+        const firstSlot = selectedSlot;
+        const secondSlot = slotIdx;
+        
+        const temp = puzzleCurrentOrder[firstSlot];
+        puzzleCurrentOrder[firstSlot] = puzzleCurrentOrder[secondSlot];
+        puzzleCurrentOrder[secondSlot] = temp;
+        
+        selectedSlot = null;
+        renderPuzzle();
+        checkPuzzleVictory();
+      }
+    }
+
+    function shufflePuzzle() {
+      puzzleCurrentOrder.sort(() => Math.random() - 0.5);
+      renderPuzzle();
+      document.getElementById('puzzleSuccess').style.display = 'none';
+    }
+
+    function checkPuzzleVictory() {
+      const isWon = puzzleCurrentOrder.every((p, i) => p === puzzleCorrectOrder[i]);
+      if (isWon) {
+        document.getElementById('puzzleSuccess').style.display = 'block';
+        if (window.confetti) confetti({ particleCount: 70, spread: 65, origin: { y: 0.6 } });
+      }
+    }
+
+    // 4. Unir con Flechas
+    let selectedLeft = null;
+    let selectedRight = null;
+    const pairs = { '1': '1', '2': '2', '3': '3' };
+
+    function selectMatch(btn) {
+      if (btn.classList.contains('matched')) return;
+      const type = btn.dataset.type;
+      const feedback = document.getElementById('matchFeedback');
+
+      if (type === 'left') {
+        if (selectedRight) {
+          const leftId = btn.dataset.id;
+          const rightId = selectedRight.dataset.id;
+          if (pairs[leftId] === rightId) {
+            btn.classList.add('matched');
+            selectedRight.classList.remove('selected');
+            selectedRight.classList.add('matched');
+            feedback.innerHTML = '🎉 ¡Muy bien! Uniste el regalo con su regla correcta.';
+            feedback.style.color = '#15803d';
+            selectedRight = null;
+            checkAllMatchedDemo();
+          } else {
+            feedback.innerHTML = '🤔 ¡Cuidado! Esa no era la regla para este regalo.';
+            feedback.style.color = '#c2410c';
+            selectedRight.classList.remove('selected');
+            selectedRight = null;
+            setTimeout(() => { if (feedback.innerHTML.includes('Cuidado')) feedback.innerHTML = ''; }, 2200);
+          }
+          return;
+        }
+        document.querySelectorAll('#matchGame .match-btn[data-type="left"]').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedLeft = btn;
+      } else if (type === 'right') {
+        if (selectedLeft) {
+          const leftId = selectedLeft.dataset.id;
+          const rightId = btn.dataset.id;
+          if (pairs[leftId] === rightId) {
+            selectedLeft.classList.remove('selected');
+            selectedLeft.classList.add('matched');
+            btn.classList.add('matched');
+            feedback.innerHTML = '🎉 ¡Muy bien! Uniste el regalo con su regla correcta.';
+            feedback.style.color = '#15803d';
+            selectedLeft = null;
+            checkAllMatchedDemo();
+          } else {
+            feedback.innerHTML = '🤔 ¡Cuidado! Esa no era la regla para este regalo.';
+            feedback.style.color = '#c2410c';
+            selectedLeft.classList.remove('selected');
+            selectedLeft = null;
+            setTimeout(() => { if (feedback.innerHTML.includes('Cuidado')) feedback.innerHTML = ''; }, 2200);
+          }
+          return;
+        }
+        document.querySelectorAll('#matchGame .match-btn[data-type="right"]').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedRight = btn;
+      }
+    }
+
+    function checkAllMatchedDemo() {
+      const matched = document.querySelectorAll('#matchGame .match-btn.matched').length;
+      if (matched === 6) {
+        const feedback = document.getElementById('matchFeedback');
+        feedback.innerHTML = '🏆 ¡GENIAL! ¡Completaste todos los regalos con sus reglas!';
+        feedback.style.color = '#15803d';
+        if (window.confetti) confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+      }
+    }
+
+    // 5. Grabación de Audio Real en la Demo
+    let demoStream = null;
+    let demoMediaRec = null;
+    let demoChunks = [];
+    let isDemoRec = false;
+
+    async function toggleDemoRecord() {
+      const btn = document.getElementById('btnRecordDemo');
+      const label = document.getElementById('recordLabel');
+      const playerBox = document.getElementById('demoAudioPlayerBox');
+      const playback = document.getElementById('demoAudioPlayback');
+
+      if (isDemoRec) {
+        isDemoRec = false;
+        btn.classList.remove('recording');
+        label.textContent = '🔄 Volver a grabar mi respuesta';
+        if (demoMediaRec && demoMediaRec.state !== 'inactive') {
+          demoMediaRec.stop();
+        }
+        return;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Tu navegador no permite grabar audio directamente.');
+        return;
+      }
+
+      try {
+        demoStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch(e) {
+        alert('No se detectó micrófono o no se otorgó permiso.');
+        return;
+      }
+
+      demoChunks = [];
+      try {
+        demoMediaRec = new MediaRecorder(demoStream);
+      } catch(e) {
+        alert('MediaRecorder no disponible.');
+        return;
+      }
+
+      demoMediaRec.ondataavailable = e => {
+        if (e.data && e.data.size > 0) demoChunks.push(e.data);
+      };
+
+      demoMediaRec.onstop = () => {
+        if (demoStream) { demoStream.getTracks().forEach(t => t.stop()); demoStream = null; }
+        if (demoChunks.length > 0) {
+          const blob = new Blob(demoChunks, { type: 'audio/webm' });
+          playback.src = URL.createObjectURL(blob);
+          playback.load();
+          playerBox.style.display = 'block';
+        }
+      };
+
+      demoMediaRec.start();
+      isDemoRec = true;
+      btn.classList.add('recording');
+      label.textContent = '⏹️ Detener y escuchar mi voz';
+    }
+
+    // 6. Dilema Ético de Primaria
+    function checkDilema(opc, btn) {
+      const fb = document.getElementById('dilemaFeedback');
+      document.querySelectorAll('.dilema-option-btn').forEach(b => b.classList.remove('correct'));
+
+      if (opc === 3) {
+        btn.classList.add('correct');
+        fb.style.display = 'block';
+        fb.style.background = '#dcfce7';
+        fb.style.border = '2px solid #22c55e';
+        fb.style.color = '#14532d';
+        fb.innerHTML = '🎉 <strong>¡Exacto! ¡Excelente sentido común!</strong><br>Los huevos son frágiles y quebradizos. No se pueden envolver bajo el sombrero ni arrastrar como a un perrito. ¡Hay que PARAR, MIRAR Y PENSAR qué objeto tenemos antes de actuar!';
+        if (window.confetti) confetti({ particleCount: 60, spread: 60, origin: { y: 0.6 } });
+      } else {
+        fb.style.display = 'block';
+        fb.style.background = '#fef2f2';
+        fb.style.border = '2px solid #f87171';
+        fb.style.color = '#991b1b';
+        fb.innerHTML = '🤔 <strong>¡Uy, cuidado!</strong><br>Si hacés eso, los huevos se van a romper por completo en el camino como le pasaba a Epaminondas. ¡Recordá mirar qué objeto tenés en las manos!';
+      }
+    }
+
+    window.onload = () => {
+      renderPuzzle();
+    };
+  </script>
+
+</body>
+</html>
