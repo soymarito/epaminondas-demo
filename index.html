@@ -298,6 +298,38 @@
       margin: 0 auto;
       text-align: left;
     }
+    /* Reproductor de Audio Narrado por Mario */
+    .scene-audio-box {
+      margin: 14px 0 16px;
+      display: flex;
+      justify-content: center;
+    }
+    .btn-play-scene {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 30px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-play-scene:hover {
+      background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.45);
+    }
+    .btn-play-scene.playing {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+    }
+
     .story-dialogue {
       background: #fff7ed;
       border-left: 4px solid #ea580c;
@@ -783,6 +815,13 @@
             <div class="story-dialogue">
               Mamá le dijo: <em>“¡Ay, Epaminondas! El bizcochuelo se envuelve en un pañuelo limpio, se pone sobre la cabeza y te colocas el sombrero encima”</em>.
             </div>
+            <!-- Audio Narración en Vivo de Mario Espínola -->
+            <div class="scene-audio-box">
+              <button type="button" class="btn-play-scene" id="btnAudioScene1" onclick="toggleSceneAudio(1)">
+                <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
+              </button>
+              <audio id="sceneAudio1" src="assets/audio_escena1_bizcochuelo.mp3" preload="none" onended="onSceneAudioEnded(1)"></audio>
+            </div>
           </div>
 
           <!-- Escena 2 (Escena 4 del libro: La Manteca) -->
@@ -799,6 +838,13 @@
             <div class="story-dialogue">
               Mamá le dijo: <em>“La manteca se envuelve en hojas grandes y se sumerge en agua fresca en el camino”</em>.
             </div>
+            <!-- Audio Narración en Vivo de Mario Espínola -->
+            <div class="scene-audio-box">
+              <button type="button" class="btn-play-scene" id="btnAudioScene2" onclick="toggleSceneAudio(2)">
+                <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
+              </button>
+              <audio id="sceneAudio2" src="assets/audio_escena2_manteca.mp3" preload="none" onended="onSceneAudioEnded(2)"></audio>
+            </div>
           </div>
 
           <!-- Escena 3 (Escena 5 del libro: El Perrito) -->
@@ -814,6 +860,13 @@
             </p>
             <div class="story-dialogue">
               Mamá le dijo: <em>“A un perrito se le ata una cuerdita suave y se tira despacito para que camine”</em>.
+            </div>
+            <!-- Audio Narración en Vivo de Mario Espínola -->
+            <div class="scene-audio-box">
+              <button type="button" class="btn-play-scene" id="btnAudioScene3" onclick="toggleSceneAudio(3)">
+                <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
+              </button>
+              <audio id="sceneAudio3" src="assets/audio_escena3_perrito.mp3" preload="none" onended="onSceneAudioEnded(3)"></audio>
             </div>
           </div>
         </div>
@@ -1087,6 +1140,7 @@
     }
 
     function updateSceneUI() {
+      stopAllSceneAudios();
       document.querySelectorAll('.scene-slide').forEach((s, idx) => {
         s.classList.toggle('active', idx + 1 === currentScene);
       });
@@ -1095,6 +1149,49 @@
       });
       document.getElementById('btnPrevScene').disabled = (currentScene === 1);
       document.getElementById('btnNextScene').disabled = (currentScene === totalScenes);
+    }
+
+    // Funciones de Audio de Escenas Oficiales
+    function stopAllSceneAudios() {
+      for (let i = 1; i <= 3; i++) {
+        const aud = document.getElementById('sceneAudio' + i);
+        const btn = document.getElementById('btnAudioScene' + i);
+        if (aud) {
+          aud.pause();
+          aud.currentTime = 0;
+        }
+        if (btn) {
+          btn.classList.remove('playing');
+          btn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola';
+        }
+      }
+    }
+
+    function toggleSceneAudio(n) {
+      const aud = document.getElementById('sceneAudio' + n);
+      const btn = document.getElementById('btnAudioScene' + n);
+      if (!aud || !btn) return;
+      if (!aud.paused) {
+        aud.pause();
+        btn.classList.remove('playing');
+        btn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola';
+      } else {
+        stopAllSceneAudios();
+        aud.play().then(() => {
+          btn.classList.add('playing');
+          btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i> Pausar relato (escuchando...)';
+        }).catch(err => {
+          console.warn('Audio play error:', err);
+        });
+      }
+    }
+
+    function onSceneAudioEnded(n) {
+      const btn = document.getElementById('btnAudioScene' + n);
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola';
+      }
     }
 
     // 3. Rompecabezas Táctil
