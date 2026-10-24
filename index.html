@@ -806,7 +806,7 @@
           <div class="scene-slide active" id="slide-1">
             <span class="scene-badge">Escena 1 • El Bizcochuelo</span>
             <div class="scene-img-wrapper">
-              <img src="assets/escena1_bizcochuelo.webp" alt="Epaminondas y el bizcochuelo">
+              <img src="escena1_bizcochuelo.webp" alt="Epaminondas y el bizcochuelo">
             </div>
             <p class="story-text">
               Un día, la madrina le regaló un bizcochuelo esponjoso: <em>“¡Llévaselo a tu mamá y agárralo bien para que no se te caiga!”</em>.<br><br>
@@ -820,7 +820,7 @@
               <button type="button" class="btn-play-scene" id="btnAudioScene1" onclick="toggleSceneAudio(1)">
                 <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
               </button>
-              <audio id="sceneAudio1" src="assets/audio_escena1_bizcochuelo.mp3" preload="none" onended="onSceneAudioEnded(1)"></audio>
+              <audio id="sceneAudio1" src="audio_escena1_bizcochuelo.mp3" preload="none" onended="onSceneAudioEnded(1)"></audio>
             </div>
           </div>
 
@@ -828,7 +828,7 @@
           <div class="scene-slide" id="slide-2">
             <span class="scene-badge">Escena 2 • La Manteca</span>
             <div class="scene-img-wrapper">
-              <img src="assets/escena2_manteca.webp" alt="Epaminondas y la manteca">
+              <img src="escena2_manteca.webp" alt="Epaminondas y la manteca">
             </div>
             <p class="story-text">
               Al día siguiente, la madrina le regaló manteca fresca. Él recordó la regla: se la puso en la cabeza y se calzó el sombrero.<br><br>
@@ -843,7 +843,7 @@
               <button type="button" class="btn-play-scene" id="btnAudioScene2" onclick="toggleSceneAudio(2)">
                 <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
               </button>
-              <audio id="sceneAudio2" src="assets/audio_escena2_manteca.mp3" preload="none" onended="onSceneAudioEnded(2)"></audio>
+              <audio id="sceneAudio2" src="audio_escena2_manteca.mp3" preload="none" onended="onSceneAudioEnded(2)"></audio>
             </div>
           </div>
 
@@ -851,7 +851,7 @@
           <div class="scene-slide" id="slide-3">
             <span class="scene-badge">Escena 3 • El Perrito</span>
             <div class="scene-img-wrapper">
-              <img src="assets/escena3_perrito.webp" alt="Epaminondas y el perrito">
+              <img src="escena3_perrito.webp" alt="Epaminondas y el perrito">
             </div>
             <p class="story-text">
               Luego, la madrina le regaló un lindo perrito cachorro.<br><br>
@@ -866,7 +866,7 @@
               <button type="button" class="btn-play-scene" id="btnAudioScene3" onclick="toggleSceneAudio(3)">
                 <i class="fa-solid fa-circle-play"></i> Escuchar relato narrado por Mario Espínola
               </button>
-              <audio id="sceneAudio3" src="assets/audio_escena3_perrito.mp3" preload="none" onended="onSceneAudioEnded(3)"></audio>
+              <audio id="sceneAudio3" src="audio_escena3_perrito.mp3" preload="none" onended="onSceneAudioEnded(3)"></audio>
             </div>
           </div>
         </div>
@@ -1211,7 +1211,7 @@
         const col = pieceIdx % 3;
         const row = Math.floor(pieceIdx / 3);
         
-        slot.style.backgroundImage = 'url("assets/escena1_bizcochuelo.webp")';
+        slot.style.backgroundImage = 'url("escena1_bizcochuelo.webp")';
         slot.style.backgroundSize = '300% 200%';
         slot.style.backgroundPosition = `${col * 50}% ${row * 100}%`;
         
